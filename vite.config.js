@@ -1,4 +1,5 @@
-import adapter from '@sveltejs/adapter-auto';
+import process from 'node:process';
+import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
@@ -11,10 +12,17 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 
-			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-			adapter: adapter()
+			// Prerenders the whole site to static files for GitHub Pages.
+			// 404.html replaces GitHub Pages' default not-found page.
+			adapter: adapter({
+				fallback: '404.html'
+			}),
+
+			// GitHub Pages serves the site from https://<user>.github.io/<repo>/, so
+			// the deploy workflow sets BASE_PATH to "/restaurant-guide". Locally it is empty.
+			paths: {
+				base: process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '')
+			}
 		})
 	]
 });

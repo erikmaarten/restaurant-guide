@@ -1,4 +1,6 @@
 <script>
+    import { resolve } from "$app/paths";
+
     let { data } = $props();
 
     const restaurant = $derived(data.restaurant);
@@ -47,7 +49,7 @@
 </svelte:head>
 
 <main class="page">
-    <a class="back" href="/">← All restaurants</a>
+    <a class="back" href={resolve("/")}>← All restaurants</a>
 
     <header class="header">
         <p class="eyebrow">{restaurant.area} · {restaurant.cuisine}</p>

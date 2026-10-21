@@ -1,4 +1,5 @@
 <script>
+    import { resolve } from "$app/paths";
     import { restaurants } from "#lib/restaurants";
 
     let query = $state("");
@@ -98,7 +99,10 @@
     <ul class="grid">
         {#each filtered as restaurant (restaurant.id)}
             <li class="card">
-                <a class="card-link" href="/restaurant/{restaurant.id}">
+                <a
+                    class="card-link"
+                    href={resolve("/restaurant/[id]", { id: restaurant.id })}
+                >
                     <div class="card-head">
                         <h2>{restaurant.title}</h2>
                         <span
